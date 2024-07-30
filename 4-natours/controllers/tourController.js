@@ -19,6 +19,16 @@ exports.checkID = (req, res, next, val) => {
 	next();
 };
 
+exports.checkBody = (req, res, next) => {
+	if (!req.body.price || !req.body.name) {
+		return res.status(400).json({
+			status: "Fail",
+			message: "Missing name or price",
+		});
+	}
+	next();
+};
+
 exports.getAllTours = (req, res) => {
 	return res.status(200).json({
 		status: "success",
@@ -45,7 +55,7 @@ exports.getTour = (req, res) => {
 exports.createTour = (req, res) => {
 	const newId = tours[tours.length - 1].id + 1;
 	const newTour = Object.assign({ id: newId }, req.body);
-
+	console.log(req.body);
 	tours.push(newTour);
 
 	fs.writeFile(
